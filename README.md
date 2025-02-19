@@ -1,0 +1,2 @@
+# information-manager
+exercise
