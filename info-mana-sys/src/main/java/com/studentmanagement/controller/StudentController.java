@@ -1,47 +1,47 @@
 package com.studentmanagement.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import com.studentmanagement.model.Student;
 import com.studentmanagement.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/students")
 public class StudentController {
 
-    private final StudentService studentService;
-
     @Autowired
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
+    private StudentService studentService;
 
+    // 显示所有学生
     @GetMapping
-    public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+    public String getAllStudents(Model model) {
+        List<Student> students = studentService.getAllStudents();
+        model.addAttribute("students", students);
+        return "index"; // 返回 students/index.html
     }
 
-    @GetMapping("/{id}")
-    public Student getStudentById(@PathVariable Long id) {
-        return studentService.getStudentById(id);
+    // 显示添加学生页面
+    @GetMapping("/new")
+    public String showStudentForm() {
+        return "new"; // 返回 students/new.html
     }
 
-    @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return studentService.saveStudent(student);
+    // 添加学生
+    @PostMapping("/new")
+    public String addStudent(@ModelAttribute Student student) {
+        studentService.saveStudent(student);
+        return "redirect:/students"; // 提交后重定向到学生列表页面
     }
 
-    @PutMapping("/{id}")
-    public Student updateStudent(@PathVariable Long id, @RequestBody Student student) {
-        student.setId(id);
-        return studentService.saveStudent(student);
-    }
 
-    @DeleteMapping("/{id}")
-    public void deleteStudent(@PathVariable Long id) {
+    // 删除学生
+    @PostMapping("/{id}")
+    public String deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
+        return "redirect:/students"; // 删除后重定向到学生列表
     }
 }

@@ -43,6 +43,12 @@
             <version>8.0.23</version>
         </dependency>
 
+        <!-- Thymeleaf template engine for rendering views -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
         <!-- Spring Boot Starter for testing purposes -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

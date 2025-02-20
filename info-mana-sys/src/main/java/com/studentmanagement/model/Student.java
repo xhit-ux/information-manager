@@ -4,15 +4,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "students")
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long nums;
     private String name;
-    private int age;
+    private Integer age;
+    private String grade;
     private String major;
 
     // Getters and Setters
@@ -22,6 +27,14 @@ public class Student {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getNums() {
+        return nums;
+    }
+
+    public void setNums(Long nums) {
+        this.nums = nums;
     }
 
     public String getName() {
@@ -38,6 +51,14 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 
     public String getMajor() {
