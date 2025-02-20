@@ -1,4 +1,4 @@
-# AI协作-简易学生信息管理系统
+# 持续完善中
 
 just as an exercise
 
