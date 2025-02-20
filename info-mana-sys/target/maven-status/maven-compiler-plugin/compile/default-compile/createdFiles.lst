@@ -1,0 +1,5 @@
+com/studentmanagement/controller/StudentController.class
+com/studentmanagement/model/Student.class
+com/studentmanagement/service/StudentService.class
+com/studentmanagement/repository/StudentRepository.class
+com/studentmanagement/StudentManagementApplication.class

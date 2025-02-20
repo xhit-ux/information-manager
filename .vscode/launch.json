@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Main<info-mana-sys>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.learns.Main",
+            "projectName": "info-mana-sys",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
