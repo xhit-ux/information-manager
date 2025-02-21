@@ -3,11 +3,13 @@ package com.studentmanagement.controller;
 import com.studentmanagement.model.Student;
 import com.studentmanagement.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 
 @Controller
 @RequestMapping("/students")
@@ -16,19 +18,23 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    // 显示所有学生
+    // 显示所有学生(分页)
     @GetMapping
-    public String getAllStudents(Model model) {
-        List<Student> students = studentService.getAllStudents();
-        model.addAttribute("students", students);
-        return "index"; // 返回 students/index.html
+    public String getAllStudents(
+            @RequestParam(defaultValue = "0") int page,  // 默认第一页
+            @RequestParam(defaultValue = "12") int size, // 默认每页12条
+            Model model) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> studentPage = studentService.getAllStudents(pageable);
+        
+        model.addAttribute("students", studentPage.getContent());
+        model.addAttribute("currentPage", page+1);
+        model.addAttribute("totalPages", studentPage.getTotalPages());
+
+        return "index"; // 返回学生列表页面
     }
 
-    // 显示添加学生页面
-    @GetMapping("/new")
-    public String showStudentForm() {
-        return "new"; // 返回 students/new.html
-    }
 
     // 添加学生
     @PostMapping("/new")

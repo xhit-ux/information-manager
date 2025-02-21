@@ -2,11 +2,10 @@ package com.studentmanagement.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.studentmanagement.model.Student;
 import com.studentmanagement.repository.StudentRepository;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class StudentService {
@@ -18,8 +17,8 @@ public class StudentService {
         this.studentRepository = studentRepository; 
     }
 
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public Page<Student> getAllStudents(Pageable pageable) {
+        return studentRepository.findAll(pageable); // 使用 Pageable 进行分页查询
     }
 
     public Student getStudentById(Long id) {
