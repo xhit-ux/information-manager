@@ -67,22 +67,96 @@
             </tbody>
         </table>
 
-        <!-- 分页控件 -->
-        <nav>
-            <ul class="pagination">
-                <li class="page-item" th:class="${currentPage == 1} ? 'disabled' : ''">
-                    <a class="page-link" th:href="@{/students?page={page}&size=12}" th:text="'上一页'"></a>
+        <!-- CSS修正 -->
+        <style>
+            .pagination-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* 流畅滚动 */
+            padding-bottom: 5px; /* 防止滚动条遮挡 */
+            }
+            .pagination {
+            flex-wrap: nowrap;
+            }
+        </style>
+
+        <!-- 分页容器 -->
+        <div class="pagination-container" th:if="${totalPages > 0}">
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+            
+              <!-- 上一页 -->
+              <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" 
+                   th:href="@{/students(page=${currentPage > 0 ? currentPage - 1 : 0}, size=10)}"
+                   th:text="'上一页'"></a>
+              </li>
+          
+              <!-- 智能页码生成 -->
+              <th:block th:if="${totalPages <= 7}">
+                <!-- 简易分页 -->
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" 
+                    class="page-item" 
+                    th:classappend="${i == currentPage} ? 'active'">
+                  <a class="page-link" 
+                     th:href="@{/students(page=${i}, size=10)}" 
+                     th:text="${i + 1}"></a>
+                </li>
+              </th:block>
+          
+              <th:block th:if="${totalPages > 7}">
+                <!-- 始终显示第一页 -->
+                <li class="page-item" th:classappend="${0 == currentPage} ? 'active'">
+                  <a class="page-link" 
+                     th:href="@{/students(page=0, size=10)}" 
+                     th:text="1"></a>
                 </li>
             
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage - 1} ? 'active' : ''">
-                    <a class="page-link" th:href="@{/students?page={page}&size=12}" th:text="${i + 1}"></a>
+                <!-- 前导省略号 -->
+                <li class="page-item disabled" th:if="${currentPage > 3}">
+                  <span class="page-link">...</span>
                 </li>
             
-                <li class="page-item" th:class="${currentPage == totalPages} ? 'disabled' : ''">
-                    <a class="page-link" th:href="@{/students?page={page}&size=12}" th:text="'下一页'"></a>
+                <!-- 动态中间页码 -->
+                <th:block th:with="
+                  start = ${currentPage < 3 ? 1 : (currentPage > totalPages - 4 ? totalPages - 5 : currentPage - 2)},
+                  end = ${currentPage < 3 ? 5 : (currentPage > totalPages - 4 ? totalPages - 2 : currentPage + 2)}">
+
+                  <li th:each="i : ${#numbers.sequence(start, end)}" 
+                      class="page-item" 
+                      th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" 
+                       th:href="@{/students(page=${i}, size=10)}" 
+                       th:text="${i + 1}"></a>
+                  </li>
+                </th:block>
+            
+                <!-- 后导省略号 -->
+                <li class="page-item disabled" th:if="${currentPage < totalPages - 4}">
+                  <span class="page-link">...</span>
                 </li>
+            
+                <!-- 始终显示最后一页 -->
+                <li class="page-item" th:classappend="${totalPages - 1 == currentPage} ? 'active'">
+                  <a class="page-link" 
+                     th:href="@{/students(page=${totalPages - 1}, size=10)}" 
+                     th:text="${totalPages}"></a>
+                </li>
+              </th:block>
+          
+              <!-- 下一页 -->
+              <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link" 
+                   th:href="@{/students(page=${currentPage < totalPages - 1 ? currentPage + 1 : currentPage}, size=10)}"
+                   th:text="'下一页'"></a>
+              </li>
             </ul>
-        </nav>
+          </nav>
+        </div>
+  
+        <!-- 空数据提示 -->
+        <div th:unless="${totalPages > 0}" class="alert alert-info mt-3">
+            <i class="fas fa-info-circle"></i> 当前没有符合条件的数据
+        </div>
 
 
     </div>

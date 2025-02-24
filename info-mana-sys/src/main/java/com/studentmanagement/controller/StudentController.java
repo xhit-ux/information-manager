@@ -22,14 +22,14 @@ public class StudentController {
     @GetMapping
     public String getAllStudents(
             @RequestParam(defaultValue = "0") int page,  // 默认第一页
-            @RequestParam(defaultValue = "12") int size, // 默认每页12条
+            @RequestParam(defaultValue = "10") int size, // 默认每页12条
             Model model) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Student> studentPage = studentService.getAllStudents(pageable);
         
         model.addAttribute("students", studentPage.getContent());
-        model.addAttribute("currentPage", page+1);
+        model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", studentPage.getTotalPages());
 
         return "index"; // 返回学生列表页面

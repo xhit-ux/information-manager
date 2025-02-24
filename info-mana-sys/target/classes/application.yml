@@ -1,7 +1,7 @@
 # Spring Datasource Configuration
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/student_db?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/student_db?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
     username: root
     password: student_pass
     driver-class-name: com.mysql.cj.jdbc.Driver
