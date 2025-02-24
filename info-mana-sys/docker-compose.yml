@@ -1,0 +1,30 @@
+services:
+  mysql-container:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: student_pass
+      MYSQL_DATABASE: student_db
+    ports:
+      - "3306:3306"  # 不暴露给外部，但容器内可访问
+    networks:
+      - app-network
+
+  spring-boot-app:
+    build: .
+    container_name: spring-boot-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/student_db?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: student_pass
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-container
+    networks:
+      - app-network
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge

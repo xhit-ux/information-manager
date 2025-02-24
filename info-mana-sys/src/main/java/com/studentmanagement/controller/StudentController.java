@@ -38,9 +38,16 @@ public class StudentController {
 
     // 添加学生
     @PostMapping("/new")
-    public String addStudent(@ModelAttribute Student student) {
+    public String addStudent(@ModelAttribute Student student,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         studentService.saveStudent(student);
-        return "redirect:/students"; // 提交后重定向到学生列表页面
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Student> pages = studentService.getAllStudents(pageable);
+        int totalPages = pages.getTotalPages();
+        
+        return "redirect:/students?page=" + (totalPages - 1) + "&size=" + pageable.getPageSize(); // 提交后重定向到学生列表页面
     }
 
 
