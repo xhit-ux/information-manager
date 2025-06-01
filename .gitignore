@@ -1,3 +1,4 @@
 .vscode
 ./target/student-management-system-1.0-SNAPSHOT.jar
 ./target/student-management-system-1.0-SNAPSHOT.jar.original
+target/student-management-system-1.0-SNAPSHOT.jar

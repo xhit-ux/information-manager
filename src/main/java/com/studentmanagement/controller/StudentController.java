@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-
 @Controller
 @RequestMapping("/students")
 public class StudentController {
@@ -21,20 +20,19 @@ public class StudentController {
     // 显示所有学生(分页)
     @GetMapping
     public String getAllStudents(
-            @RequestParam(defaultValue = "0") int page,  // 默认第一页
-            @RequestParam(defaultValue = "10") int size, // 默认每页12条
+            @RequestParam(defaultValue = "0") int page, // 默认第一页
+            @RequestParam(defaultValue = "10") int size, // 默认每页10条
             Model model) {
 
         Pageable pageable = PageRequest.of(page, size);
         Page<Student> studentPage = studentService.getAllStudents(pageable);
-        
+
         model.addAttribute("students", studentPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", studentPage.getTotalPages());
 
         return "index"; // 返回学生列表页面
     }
-
 
     // 添加学生
     @PostMapping("/new")
@@ -46,10 +44,9 @@ public class StudentController {
         Pageable pageable = PageRequest.of(page, size);
         Page<Student> pages = studentService.getAllStudents(pageable);
         int totalPages = pages.getTotalPages();
-        
+
         return "redirect:/students?page=" + (totalPages - 1) + "&size=" + pageable.getPageSize(); // 提交后重定向到学生列表页面
     }
-
 
     // 删除学生
     @PostMapping("/{id}")
