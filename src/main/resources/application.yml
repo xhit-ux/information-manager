@@ -9,9 +9,13 @@ spring:
     # Spring JPA Configuration
     jpa:
         hibernate:
-            ddl-auto: update
+            ddl-auto: none #根据类文件创建数据表单
         show-sql: true
         database-platform: org.hibernate.dialect.MySQL8Dialect
+
+    sql:
+        init:
+            mode: always # 启用 SQL 文件自动执行（schema.sql、data.sql）
 
 # Spring Boot Server Configuration
 server:

@@ -1,0 +1,11 @@
+.pagination-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    /* 流畅滚动 */
+    padding-bottom: 5px;
+    /* 防止滚动条遮挡 */
+}
+
+.pagination {
+    flex-wrap: nowrap;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>系统初始化</title>
+    <link rel="stylesheet" th:href="@{/css/admin_style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>初始化系统 - 创建管理员账户</h2>
+        <form method="post" action="/init_system" class="mt-4">
+            <div class="mb-3">
+                <label class="form-label">教职工号</label>
+                <input type="text" name="workId" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">姓名</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">部门</label>
+                <input type="text" name="department" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">职称</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">密码</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">创建管理员</button>
+        </form>
+    </div>
+</body>
+
+</html>
