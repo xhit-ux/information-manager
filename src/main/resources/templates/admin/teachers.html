@@ -1,56 +1,124 @@
 <!-- templates/admin/teachers.html -->
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{admin_layout :: layout}">
-<section>
-    <h2 class="mb-4">教师信息管理</h2>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/admin_layout}">
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>工号</th>
-                <th>姓名</th>
-                <th>系别</th>
-                <th>职称</th>
-                <th>是否管理员</th>
-                <th>操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="teacher : ${teachers}">
-                <td th:text="${teacher.id}"></td>
-                <td th:text="${teacher.workId}"></td>
-                <td th:text="${teacher.name}"></td>
-                <td th:text="${teacher.department}"></td>
-                <td th:text="${teacher.title}"></td>
-                <td th:text="${teacher.isAdmin ? '是' : '否'}"></td>
-                <td>
-                    <form th:action="@{/admin/teachers/{id}(id=${teacher.id})}" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-danger btn-sm">删除</button>
-                    </form>
-                </td>
-            </tr>
-            <tr>
-                <form th:action="@{/admin/teachers/new}" method="post">
-                    <td>#</td>
-                    <td><input type="text" class="form-control" name="workId" placeholder="工号" required></td>
-                    <td><input type="text" class="form-control" name="name" placeholder="姓名" required></td>
-                    <td><input type="text" class="form-control" name="department" placeholder="系别" required></td>
-                    <td><input type="text" class="form-control" name="title" placeholder="职称" required></td>
-                    <td>
-                        <select name="isAdmin" class="form-select">
-                            <option value="true">是</option>
-                            <option value="false">否</option>
-                        </select>
-                    </td>
-                    <td><button type="submit" class="btn btn-primary btn-sm">添加</button></td>
-                </form>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- 分页组件 -->
-    <div th:replace="fragments/pagination :: pagination(${currentPage}, ${totalPages}, '/admin/teachers')"></div>
-</section>
+    <head>
+        <title>教师信息管理</title>
+    </head>
+    
+    <body>
+        <div layout:fragment="content">
+            <h2 class="mb-4">教师信息管理</h2>
+            
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>工号</th>
+                        <th>姓名</th>
+                        <th>系别</th>
+                        <th>职称</th>
+                        <th>是否管理员</th>
+                        <th> </th>
+                        <th style="width: 10%;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="teacher : ${teachers}">
+                        <td th:text="${teacher.id}"></td>
+                        <td th:text="${teacher.workId}"></td>
+                        <td th:text="${teacher.name}"></td>
+                        <td th:text="${teacher.department}"></td>
+                        <td th:text="${teacher.title}"></td>
+                        <td th:text="${teacher.isAdmin ? '是' : '否'}"></td>
+                        <td th:text="null"></td>
+                        <td>
+                            <form th:action="@{/admin/teachers/{id}(id=${teacher.id})}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">删除</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <form th:action="@{/admin/teachers/new}" method="post">
+                            <td>#</td>
+                            <td><input type="text" class="form-control" name="workId" placeholder="工号" required></td>
+                            <td><input type="text" class="form-control" name="name" placeholder="姓名" required></td>
+                            <td><input type="text" class="form-control" name="department" placeholder="系别" required></td>
+                            <td><input type="text" class="form-control" name="title" placeholder="职称" required></td>
+                            <td>
+                                <input type="checkbox" class="form-check-input" name="isAdmin" value="true">
+                            </td>
+                            <td><input type="password" class="form-control" name="password" placeholder="初始密码" required></td>
+                            <td><button type="submit" class="btn btn-primary btn-sm" style="width: 85%;">添加</button></td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- 分页 -->
+            <div class="pagination-container" th:if="${totalPages > 0}">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+            
+                        <!-- 上一页 -->
+                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                            <a class="page-link"
+                                th:href="@{/admin/teachers(page=${currentPage > 0 ? currentPage - 1 : 0}, size=10)}">上一页</a>
+                        </li>
+            
+                        <!-- 简易分页 -->
+                        <th:block th:if="${totalPages <= 7}">
+                            <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}" class="page-item"
+                                th:classappend="${i == currentPage} ? 'active'">
+                                <a class="page-link" th:href="@{/admin/teachers(page=${i}, size=10)}" th:text="${i + 1}"></a>
+                            </li>
+                        </th:block>
+            
+                        <!-- 高级分页 -->
+                        <th:block th:if="${totalPages > 7}">
+                            <li class="page-item" th:classappend="${0 == currentPage} ? 'active'">
+                                <a class="page-link" th:href="@{/admin/teachers(page=0, size=10)}">1</a>
+                            </li>
+            
+                            <li class="page-item disabled" th:if="${currentPage > 3}">
+                                <span class="page-link">...</span>
+                            </li>
+            
+                            <th:block
+                                th:with="start = ${currentPage < 3 ? 1 : (currentPage > totalPages - 4 ? totalPages - 5 : currentPage - 2)},
+                                                       end = ${currentPage < 3 ? 5 : (currentPage > totalPages - 4 ? totalPages - 2 : currentPage + 2)}">
+                                <li th:each="i : ${#numbers.sequence(start, end)}" class="page-item"
+                                    th:classappend="${i == currentPage} ? 'active'">
+                                    <a class="page-link" th:href="@{/admin/teachers(page=${i}, size=10)}" th:text="${i + 1}"></a>
+                                </li>
+                            </th:block>
+            
+                            <li class="page-item disabled" th:if="${currentPage < totalPages - 4}">
+                                <span class="page-link">...</span>
+                            </li>
+            
+                            <li class="page-item" th:classappend="${totalPages - 1 == currentPage} ? 'active'">
+                                <a class="page-link" th:href="@{/admin/teachers(page=${totalPages - 1}, size=10)}"
+                                    th:text="${totalPages}"></a>
+                            </li>
+                        </th:block>
+            
+                        <!-- 下一页 -->
+                        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                            <a class="page-link"
+                                th:href="@{/admin/teachers(page=${currentPage < totalPages - 1 ? currentPage + 1 : currentPage}, size=10)}">下一页</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <!-- 无数据提示 -->
+            <div th:unless="${totalPages > 0}" class="alert alert-info mt-3">
+                当前没有符合条件的数据
+            </div>
+            
+        </div>
+    </body>
 
 </html>

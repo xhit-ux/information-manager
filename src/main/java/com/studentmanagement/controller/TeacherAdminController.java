@@ -33,8 +33,10 @@ public class TeacherAdminController {
 
     @PostMapping("/new")
     public String addTeacher(@ModelAttribute Teacher teacher,
+            @RequestParam(value = "isAdmin", defaultValue = "false") boolean isAdmin,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
+        teacher.setAdmin(isAdmin);
         teacherService.saveTeacher(teacher);
 
         Pageable pageable = PageRequest.of(page, size);

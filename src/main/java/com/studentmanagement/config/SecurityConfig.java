@@ -58,6 +58,9 @@ public class SecurityConfig {
         };
     }
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler customSuccessHandler;
+
     // 安全过滤器链配置
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -67,13 +70,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/init_system", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/teacher/**").hasAnyRole("TEACHER", "ADMIN")
-                        .requestMatchers("/students/**").hasAnyRole("STUDENT", "TEACHER", "ADMIN")
+                        .requestMatchers("/teachers/**").hasRole("TEACHER")
+                        .requestMatchers("/students/**").hasRole("STUDENT")
                         .anyRequest().authenticated())
 
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/admin", true)
+                        .successHandler(customSuccessHandler)
                         .permitAll())
 
                 .logout(logout -> logout

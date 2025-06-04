@@ -6,15 +6,18 @@ import com.studentmanagement.model.Student;
 import com.studentmanagement.repository.StudentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class StudentService {
 
-    @Autowired
+    private final PasswordEncoder passwordEncoder;
     private StudentRepository studentRepository;
 
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository; 
+    @Autowired
+    public StudentService(StudentRepository studentRepository, PasswordEncoder passwordEncoder) {
+        this.studentRepository = studentRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Page<Student> getAllStudents(Pageable pageable) {
@@ -26,6 +29,18 @@ public class StudentService {
     }
 
     public Student saveStudent(Student student) {
+
+        if (student.getId() != null) {
+            // 是更新操作，保留原密码
+            Student existingStudent = studentRepository.findById(student.getId()).orElse(null);
+            if (existingStudent != null) {
+                student.setPassword(existingStudent.getPassword());
+            }
+        } else {
+            // 是新增操作，加密密码
+            student.setPassword(passwordEncoder.encode(student.getPassword()));
+        }
+
         return studentRepository.save(student);
     }
 

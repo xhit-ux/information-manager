@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>学生成绩查询</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- 顶部导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">学生成绩查询</a>
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="btn btn-light" th:href="@{/logout}">退出登录</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主体内容区域 -->
+    <div class="container mt-4">
+        <h3>我的信息</h3>
+        <table class="table table-bordered mt-3">
+            <tr>
+                <th>学号</th>
+                <td th:text="${student.nums}">2021001</td>
+            </tr>
+            <tr>
+                <th>姓名</th>
+                <td th:text="${student.name}">张三</td>
+            </tr>
+            <tr>
+                <th>年龄</th>
+                <td th:text="${student.age}">20</td>
+            </tr>
+            <tr>
+                <th>年级</th>
+                <td th:text="${student.grade}">2021级</td>
+            </tr>
+            <tr>
+                <th>专业</th>
+                <td th:text="${student.major}">计算机科学</td>
+            </tr>
+            <tr>
+                <th>成绩</th>
+                <td th:text="${student.score}">95</td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

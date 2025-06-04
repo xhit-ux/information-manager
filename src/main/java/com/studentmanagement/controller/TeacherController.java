@@ -11,8 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/admin/students")
-public class StudentAdminController {
+@RequestMapping("/teachers")
+public class TeacherController {
 
     @Autowired
     private StudentService studentService;
@@ -28,7 +28,7 @@ public class StudentAdminController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", studentPage.getTotalPages());
 
-        return "admin/students"; // 使用 admin/students.html 页面
+        return "teachers"; // 使用 teacher.html 页面
     }
 
     @PostMapping("/new")
@@ -41,18 +41,18 @@ public class StudentAdminController {
         Page<Student> pages = studentService.getAllStudents(pageable);
         int totalPages = pages.getTotalPages();
 
-        return "redirect:/admin/students?page=" + (totalPages - 1) + "&size=" + size;
+        return "redirect:/teachers?page=" + (totalPages - 1) + "&size=" + size;
     }
 
     @PostMapping("/update")
     public String updateStudent(@ModelAttribute Student student) {
         studentService.saveStudent(student);
-        return "redirect:/admin/students";
+        return "redirect:/teachers";
     }
 
     @PostMapping("/{id}")
     public String deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
-        return "redirect:/admin/students";
+        return "redirect:/teachers";
     }
 }

@@ -6,15 +6,18 @@ import com.studentmanagement.model.Teacher;
 import com.studentmanagement.repository.TeacherRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class TeacherService {
 
-    @Autowired
+    private final PasswordEncoder passwordEncoder;
     private TeacherRepository teacherRepository;
 
-    public TeacherService(TeacherRepository teacherRepository) {
+    @Autowired
+    public TeacherService(TeacherRepository teacherRepository, PasswordEncoder passwordEncoder) {
         this.teacherRepository = teacherRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Page<Teacher> getAllTeachers(Pageable pageable) {
@@ -26,6 +29,7 @@ public class TeacherService {
     }
 
     public Teacher saveTeacher(Teacher teacher) {
+        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
         return teacherRepository.save(teacher);
     }
 

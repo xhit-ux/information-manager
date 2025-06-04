@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS student (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     age INT NOT NULL,
+    score INT,
     grade VARCHAR(50),
     major  VARCHAR(200),
     nums BIGINT,
