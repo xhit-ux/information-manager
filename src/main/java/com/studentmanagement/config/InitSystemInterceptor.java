@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
@@ -18,7 +19,9 @@ public class InitSystemInterceptor implements HandlerInterceptor {
     private TeacherRepository teacherRepository;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+    public boolean preHandle(@NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull Object handler)
             throws Exception {
         boolean teacherEmpty = teacherRepository.count() == 0;
         boolean studentEmpty = studentRepository.count() == 0;
