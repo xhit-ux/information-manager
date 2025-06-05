@@ -4,3 +4,4 @@
 target/student-management-system-1.0-SNAPSHOT.jar
 *.zip
 all_*
+tar*
