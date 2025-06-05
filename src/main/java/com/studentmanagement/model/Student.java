@@ -17,7 +17,7 @@ public class Student {
     private String name;
 
     private Integer age;
-    private Integer score;
+    private Double score;
 
     private String grade;
 
@@ -61,11 +61,11 @@ public class Student {
         this.age = age;
     }
 
-    public Integer getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 
